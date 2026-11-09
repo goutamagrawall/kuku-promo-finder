@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Find and rank 20 to 60 second promo cuts from timestamped screenplays.">
+  <title>Promo Finder | Screenplay edit desk</title>
+  <link rel="stylesheet" href="studio.css">
+  <script defer src="engine.js"></script>
+  <script defer src="ranker.js"></script>
+  <script defer src="trained-model.js"></script>
+  <script defer src="editorial.js"></script>
+  <script defer src="editorial-model.js"></script>
+  <script defer src="transfer.js"></script>
+  <script defer src="transfer-model.js"></script>
+  <script defer src="demo.js"></script>
+  <script defer src="library-data.js"></script>
+  <script defer src="ui.js"></script>
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="symbols" aria-hidden="true">
+    <symbol id="i-frame" viewBox="0 0 24 24"><path d="M7 4H4v3m13-3h3v3M4 17v3h3m13-3v3h-3"/><path d="m10 8 6 4-6 4z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-library" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 10h16m-11 0v9"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12m-4-4 4 4 4-4M4 17v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="6" y="10" width="12" height="10" rx="2"/><path d="M9 10V7a3 3 0 0 1 6 0v3m-3 4v2"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 12h6m-6 4h6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4 4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></symbol>
+  </svg>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="masthead">
+    <div class="wrap mast-inner">
+      <a class="wordmark" href="#library" aria-label="Promo Finder library">
+        <span class="brand-icon"><svg class="icon" aria-hidden="true"><use href="#i-frame"></use></svg></span>
+        <span>Promo Finder<span class="brand-sub">Screenplay edit desk</span></span>
+      </a>
+      <nav class="main-nav" aria-label="Workspace">
+        <a href="#library" id="nav-library" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-library"></use></svg>Cut library</a>
+        <a href="#analyze" id="nav-analyze"><svg class="icon" aria-hidden="true"><use href="#i-upload"></use></svg>Analyze a script</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <section id="library-page" aria-label="Cut library">
+      <section class="hero" aria-labelledby="hero-heading">
+        <div class="hero-copy">
+          <div class="hero-index"><span></span>50-episode collection</div>
+          <h1 id="hero-heading">Find the cut.</h1>
+          <p class="hero-dek">Browse ranked promo moments from the original series, or turn a timestamped screenplay into a shortlist of 20–60 second cuts.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#analyze"><svg class="icon" aria-hidden="true"><use href="#i-upload"></use></svg>Analyze a script</a>
+            <a class="text-link" href="#all-cuts">Browse all cuts<svg class="icon" aria-hidden="true"><use href="#i-down"></use></svg></a>
+          </div>
+        </div>
+        <div class="edit-preview" aria-label="Featured cut timing">
+          <div class="preview-top"><span><span class="lamp"></span> Cut timing</span><span class="timecode">EP 03 <span class="preview-sep">/</span> 01</span></div>
+          <div class="preview-screen">
+            <div class="preview-label"><span>Episode 03</span><span class="preview-duration">51.50 s</span></div>
+            <div class="frame-strip" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              <div class="trim-range"><i></i><i></i></div>
+              <div class="playhead"></div>
+            </div>
+            <div class="preview-times timecode"><span>01:24.00</span><span>02:15.50</span></div>
+          </div>
+          <div class="preview-bottom"><strong>A rescue becomes a proposal</strong><span>Post first</span></div>
+        </div>
+      </section>
+
+      <div class="collection">
+        <div><span class="collection-label">Original series</span><p id="series-title">I Married a Broken Soldier. He was a Duke</p></div>
+        <dl class="collection-facts">
+          <div><dt>Episodes</dt><dd id="library-episodes">50</dd></div>
+          <div><dt>Saved cuts</dt><dd id="library-total">250</dd></div>
+          <div><dt>Cut length</dt><dd>20–60 s</dd></div>
+        </dl>
+      </div>
+
+      <section class="workspace-section" aria-labelledby="featured-heading">
+        <div class="section-head">
+          <div><h2 id="featured-heading">Post first</h2><p>Five cuts selected from the editorial review across the series.</p></div>
+        </div>
+        <div id="featured" class="featured-grid"></div>
+      </section>
+
+      <section id="all-cuts" class="workspace-section" aria-labelledby="library-heading">
+        <div class="section-head section-filter">
+          <div><h2 id="library-heading">All episode cuts</h2><p>Five saved editorial ranks per episode. Timecodes are relative to each episode.</p></div>
+          <div class="filters">
+            <label class="field">Episode<select id="library-episode"><option value="all">All episodes</option></select></label>
+            <label class="field search-field">Find a moment<span><svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg><input id="library-search" type="search" placeholder="Search cut notes"></span></label>
+          </div>
+        </div>
+        <div class="library-count" id="library-count" role="status"></div>
+        <div id="library-cuts" class="cut-table"></div>
+        <div class="more-row"><button class="button" type="button" id="library-more">Show more cuts</button></div>
+      </section>
+    </section>
+
+    <section id="analyze-page" aria-labelledby="analyze-heading" hidden>
+      <header class="analyze-intro">
+        <h1 id="analyze-heading">Analyze a script</h1>
+        <p>Load an English timestamped screenplay. V2 ranks 20–60 second cuts by opening hook, cliffhanger, and standalone context.</p>
+      </header>
+      <div class="input-grid">
+        <section class="input-panel" aria-labelledby="input-heading">
+          <div class="input-head"><h2 id="input-heading">Add a screenplay</h2><div class="input-tabs" aria-label="Input method">
+            <button id="upload-tab" type="button" aria-pressed="true">Upload</button>
+            <button id="paste-tab" type="button" aria-pressed="false">Paste</button>
+          </div></div>
+          <div id="upload-panel">
+            <div id="drop-zone" class="drop-zone">
+              <span class="drop-icon"><svg class="icon" aria-hidden="true"><use href="#i-upload"></use></svg></span>
+              <strong>Drop screenplay files here</strong>
+              <p>Use one .txt file per episode, from the same series.</p>
+              <button class="button button-primary" id="choose" type="button">Choose files</button>
+              <input id="files" type="file" accept=".txt,text/plain" multiple hidden>
+            </div>
+          </div>
+          <form id="paste-panel" hidden>
+            <label class="field">Timestamped screenplay<textarea id="script-text" rows="8" placeholder="EPISODE NUMBER: Episode 1"></textarea></label>
+            <button class="button button-primary" type="submit">Analyze pasted script</button>
+          </form>
+          <div class="input-foot"><span><svg class="icon" aria-hidden="true"><use href="#i-lock"></use></svg>Processed in this browser</span><button class="text-button" type="button" id="demo">Try the demo script<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button></div>
+          <p id="status" class="status" role="status" aria-live="polite" hidden></p>
+        </section>
+        <aside class="format-panel" aria-labelledby="format-heading">
+          <svg class="icon format-icon" aria-hidden="true"><use href="#i-file"></use></svg>
+          <h2 id="format-heading">Script format</h2>
+          <p>Use the same episode header and timed blocks as the original scripts.</p>
+          <pre><code>EPISODE NUMBER: Episode 1
+
+**ACTION:**
+Start: (00:00.00) | End: (00:02.50)
+The door bursts open.
+
+**MARA (Alarmed):**
+Start: (00:03.00) | End: (00:06.00)
+Who let you in?</code></pre>
+          <p class="format-note">Use one episode per file or paste. Include enough timed material for a continuous cut of at least 20 seconds. Scripts stay in this browser and are not uploaded or saved.</p>
+        </aside>
+      </div>
+
+      <section id="results" class="workspace-section" aria-labelledby="results-heading" hidden>
+        <div class="section-head results-head"><div><h2 id="results-heading">Ranked cuts</h2><p id="result-source"></p></div>
+          <div class="export-group"><button id="csv" class="button" type="button"><svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg>CSV</button><button id="json" class="button" type="button"><svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg>JSON</button></div>
+        </div>
+        <div id="stats" class="result-stats"></div>
+        <div id="warnings" class="warnings" hidden></div>
+        <div class="result-controls">
+          <label class="field">Rank by<select id="ranking"><option value="trained">V2 trained ranker</option><option value="editorial">Editorial ranker</option><option value="rules">Original rules</option><option value="transfer">Cross-genre experiment</option></select></label>
+          <label class="field">Episode<select id="episode"><option value="all">All episodes</option></select></label>
+          <label class="field">View<select id="view"><option value="promos">Shortlist</option><option value="rejected">Rejected by review</option></select></label>
+        </div>
+        <details class="review-tools">
+          <summary>Review with an editor or AI tool</summary>
+          <p>Export a private packet with script excerpts and a scoring rubric. Import the resulting review JSON to elevate or reject individual cuts.</p>
+          <div class="export-group"><button id="packet" class="button" type="button">Export review packet</button><button id="import" class="button" type="button">Import review JSON</button><input id="reviews" type="file" accept=".json,application/json" hidden></div>
+        </details>
+        <section id="post" class="post-picks" aria-labelledby="post-heading" hidden><h3 id="post-heading">Post first</h3><ol id="post-list"></ol></section>
+        <div id="list" class="result-grid"></div>
+      </section>
+    </section>
+  </main>
+  <footer class="wrap site-footer"><span>Promo Finder</span><p>Timecodes refer to the screenplay. Check cut points against the footage before editing.</p></footer>
+</body>
+</html>

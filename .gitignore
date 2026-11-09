@@ -1,0 +1,12 @@
+# Keep local or private material out of this public frontend repository.
+.openai/
+node_modules/
+.env
+.env.*
+*.txt
+*.xlsx
+*.docx
+*.zip
+raw-outputs/
+private*/
+scripts/
